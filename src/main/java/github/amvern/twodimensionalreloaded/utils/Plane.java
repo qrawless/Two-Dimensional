@@ -14,7 +14,7 @@ import net.minecraft.world.phys.Vec3;
 public class Plane {
     private static final double CULL_DIST = -0.5;
     private static final double z = 0.5;
-    private static boolean renderCulledBlocks = false;
+    private static volatile boolean renderCulledBlocks = false;
 
     public static final int BASE_LAYER_Z = 0;
     public static final int FACE_AWAY_LAYER_Z = 1;
