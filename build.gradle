@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.11-SNAPSHOT'
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
     id 'maven-publish'
 }
 
@@ -14,11 +14,13 @@ loom {
     splitEnvironmentSourceSets()
 
     mods {
-        "twodimensional" {
+        "twodimensionalreloaded" {
             sourceSet sourceSets.main
             sourceSet sourceSets.client
         }
     }
+
+    accessWidenerPath = file("src/main/resources/twodimensionalreloaded.classtweaker")
 }
 
 
@@ -29,26 +31,34 @@ repositories {
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
     maven {
-        name = 'Ladysnake Mods'
-        url = 'https://maven.ladysnake.org/releases'
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
         content {
-            includeGroup 'io.github.ladysnake'
-            includeGroup 'org.ladysnake'
-            includeGroupByRegex 'dev\\.onyxstudios.*'
+            includeGroup 'maven.modrinth'
         }
     }
+
+    maven {
+        url "https://maven.caffeinemc.net/releases"
+    }
+
+    maven { url "https://maven.shedaniel.me/" }
+    maven { url "https://maven.terraformersmc.com/releases/" }
+
+    mavenCentral()
 }
 
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    localRuntime "maven.modrinth:iris:${iris_version}"
+    implementation "net.caffeinemc:sodium-fabric:${sodium_version}"
 
-    modImplementation "org.ladysnake:satin:1.14.0"
-    include "org.ladysnake:satin:1.14.0"
+    implementation "me.shedaniel.cloth:cloth-config-fabric:26.3.158"
+    api "com.terraformersmc:modmenu:20.0.1"
 }
 
 processResources {
@@ -64,7 +74,7 @@ processResources {
     }
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 25
 tasks.withType(JavaCompile).configureEach {
     // ensure that the encoding is set to UTF-8, no matter what the system default is
     // this fixes some edge cases with special characters not displaying correctly
@@ -88,9 +98,15 @@ java {
 }
 
 jar {
+    archiveVersion.set("${project.minecraft_version}-${project.version}")
+
     from("LICENSE") {
         rename { "${it}_${project.archivesBaseName}" }
     }
+}
+
+tasks.named("jar") {
+    archiveVersion.set("${project.version}+${minecraft_version}")
 }
 
 // configure the maven publication
