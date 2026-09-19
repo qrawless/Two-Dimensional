@@ -10,6 +10,8 @@ Sometimes living in all three dimensions can be a real stressor, so why not take
 
 If you ever start to miss your three-dimensional life, just press **B** to access the background layer.
 
+And if you ever want to look the other way, just hold **V** to face forward and reveal the layer that is normally culled in front of you.
+
 Based on the original mod [**Two Dimensional**](https://modrinth.com/mod/two-dimensional) by Mishkis.
 
 ### <p align="center">THIS MOD CHANGES WORLD GENERATION.<br> DO NOT USE THIS MOD ON A WORLD YOU WILL WANT TO REVERT TO NORMAL.</p>
