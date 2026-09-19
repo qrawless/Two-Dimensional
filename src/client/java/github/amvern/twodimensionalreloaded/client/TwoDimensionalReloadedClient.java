@@ -17,8 +17,10 @@ import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
+import net.caffeinemc.mods.sodium.client.render.SodiumWorldRenderer;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.SectionPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -106,9 +108,19 @@ public class TwoDimensionalReloadedClient implements ClientModInitializer {
     }
 
     private void reloadPlaneSections(Minecraft client) {
-        if (client.level == null) return;
+        if (client.level == null || client.player == null) return;
 
-        client.levelRenderer.invalidateCompiledGeometry(
-            client.level, client.options, client.gameRenderer.mainCamera(), client.getBlockColors());
+        int rd = client.options.getEffectiveRenderDistance();
+        int px = SectionPos.blockToSectionCoord(client.player.getBlockX());
+        int py = SectionPos.blockToSectionCoord(client.player.getBlockY());
+        int secZ = SectionPos.blockToSectionCoord(Plane.FACE_FORWARD_LAYER_Z);
+
+        SodiumWorldRenderer renderer = SodiumWorldRenderer.instanceNullable();
+        if (renderer != null) {
+            renderer.scheduleRebuildForChunks(
+                px - rd, py - rd, secZ,
+                px + rd, py + rd, secZ,
+                false);
+        }
     }
 }
