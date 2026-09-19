@@ -17,6 +17,7 @@ import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
+import net.caffeinemc.mods.sodium.client.render.SodiumWorldRenderer;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -119,6 +120,10 @@ public class TwoDimensionalReloadedClient implements ClientModInitializer {
             for (int sy = py - rd; sy <= py + rd; sy++) {
                 ((ClientLevel) client.level).setSectionDirtyWithNeighbors(sx, sy, secZ);
             }
+        }
+        SodiumWorldRenderer renderer = SodiumWorldRenderer.instanceNullable();
+        if (renderer != null) {
+            renderer.scheduleTerrainUpdate();
         }
     }
 }
