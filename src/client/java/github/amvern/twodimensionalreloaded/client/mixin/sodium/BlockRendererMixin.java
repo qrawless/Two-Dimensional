@@ -16,7 +16,7 @@ public class BlockRendererMixin {
 
     @Inject(method = "renderModel", at = @At("HEAD"), cancellable = true)
     private void cullBlocks(BlockStateModel model, BlockState state, BlockPos pos, BlockPos origin, CallbackInfo ci) {
-        if (Plane.shouldCull(pos)) {
+        if (Plane.shouldCullRender(pos)) {
             ci.cancel();
         }
     }
@@ -24,7 +24,7 @@ public class BlockRendererMixin {
     @Inject(method = "processQuad", at = @At("HEAD"), cancellable = true)
     private void cullQuads(MutableQuadViewImpl quad, CallbackInfo ci) {
         BlockPos pos = ((AbstractBlockRenderContextAccessor) this).getPos();
-        if (Plane.shouldCull(pos)) {
+        if (Plane.shouldCullRender(pos)) {
             ci.cancel();
         }
     }

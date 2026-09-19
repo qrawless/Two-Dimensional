@@ -66,6 +66,13 @@ public class Plane {
         return dist <= CULL_DIST;
     }
 
+    public static boolean shouldCullRender(BlockPos blockPos) {
+        if (blockPos.getZ() == FACE_FORWARD_LAYER_Z && renderCulledBlocks) {
+            return false;
+        }
+        return shouldCull(blockPos);
+    }
+
     public static boolean isBackLayer(BlockPos blockPos) {
         return blockPos.getZ() <= FACE_FORWARD_LAYER_Z;
     }

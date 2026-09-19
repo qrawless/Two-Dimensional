@@ -21,7 +21,7 @@ public class TheEndPortalBlockEntityMixin {
         BlockEntity be = (BlockEntity) (Object) this;
         BlockPos adjacentPos = be.getBlockPos().relative(direction);
 
-        if (Plane.shouldCull(adjacentPos)) {
+        if (Plane.shouldCullRender(adjacentPos)) {
             cir.setReturnValue(true);
         }
     }

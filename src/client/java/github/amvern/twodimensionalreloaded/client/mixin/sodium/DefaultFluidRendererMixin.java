@@ -27,7 +27,7 @@ public class DefaultFluidRendererMixin {
     private void cullFluids(
             LevelSlice level, BlockState blockState, FluidState fluidState, BlockPos blockPos, BlockPos offset, TranslucentGeometryCollector collector, ChunkModelBuilder meshBuilder, Material material, ColorProvider<FluidState> colorProvider, FluidModel sprites, CallbackInfo ci
     ) {
-        if (Plane.shouldCull(blockPos)) {
+        if (Plane.shouldCullRender(blockPos)) {
             ci.cancel();
         }
     }
@@ -37,7 +37,7 @@ public class DefaultFluidRendererMixin {
             BlockGetter view, BlockPos selfPos, Direction facing, FluidState fluid, CallbackInfoReturnable<Boolean> cir
     ) {
         BlockPos pos = selfPos.relative(facing);
-        if (Plane.shouldCull(pos)) {
+        if (Plane.shouldCullRender(pos)) {
             cir.setReturnValue(true);
         }
     }
@@ -45,7 +45,7 @@ public class DefaultFluidRendererMixin {
     @Inject(method = "isFullBlockFluidVisible", at = @At("HEAD"), cancellable = true)
     public void test(BlockAndTintGetter world, BlockPos pos, Direction dir, BlockState blockState, FluidState fluid, CallbackInfoReturnable<Boolean> cir) {
         BlockPos pos2 = pos.relative(dir);
-        if (Plane.shouldCull(pos2)) {
+        if (Plane.shouldCullRender(pos2)) {
             cir.setReturnValue(true);
         }
     }
@@ -53,7 +53,7 @@ public class DefaultFluidRendererMixin {
     @Inject(method = "isFluidSideExposed(Lnet/minecraft/client/renderer/block/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;F)Z", at = @At("HEAD"), cancellable = true)
     public void test2(BlockAndTintGetter world, BlockState ownBlockState, BlockPos neighborPos, Direction facing, float height, CallbackInfoReturnable<Boolean> cir) {
         BlockPos pos2 = neighborPos.relative(facing);
-        if (Plane.shouldCull(pos2)) {
+        if (Plane.shouldCullRender(pos2)) {
             cir.setReturnValue(true);
         }
     }
