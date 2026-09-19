@@ -40,7 +40,7 @@ public abstract class PlayerMixin extends LivingEntity {
     @Inject(method = "tick", at =  @At("HEAD"))
     private void updatePlaneContainedEntities(CallbackInfo ci) {
         if(this.tickCount % 20 == 0 && this.level() instanceof ServerLevel level) {
-            level.getEntities(this, AABB.ofSize(position(), 64, 32, 64)).forEach(entity -> {
+            level.getEntities(this, AABB.ofSize(position(), Plane.ENTITY_TRACK_RANGE_HORIZONTAL, Plane.ENTITY_TRACK_RANGE_VERTICAL, Plane.ENTITY_TRACK_RANGE_HORIZONTAL)).forEach(entity -> {
                 if(!(entity instanceof Player) && !entity.hasAttached(PLANE_ENTITY_FLAG)) {
                     entity.setAttached(PLANE_ENTITY_FLAG, true);
                 }
