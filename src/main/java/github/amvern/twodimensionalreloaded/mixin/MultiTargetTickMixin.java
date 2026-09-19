@@ -8,6 +8,7 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 import net.minecraft.world.phys.Vec3;
+import github.amvern.twodimensionalreloaded.utils.Plane;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,7 +25,7 @@ public class MultiTargetTickMixin {
         Vec3 delta = entity.getDeltaMovement();
         entity.setDeltaMovement(delta.x, delta.y, 0.0);
 
-        if(entity.hasControllingPassenger()) entity.setPos(entity.getX(), entity.getY(), Math.floor(entity.getZ()) + 0.5);
+        if(entity.hasControllingPassenger()) entity.setPos(entity.getX(), entity.getY(), Math.floor(entity.getZ()) + Plane.BLOCK_CENTER);
     }
 
 }
