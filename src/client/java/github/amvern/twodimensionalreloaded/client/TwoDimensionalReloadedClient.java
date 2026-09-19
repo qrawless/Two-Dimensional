@@ -21,6 +21,7 @@ import net.caffeinemc.mods.sodium.client.render.SodiumWorldRenderer;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.SectionPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
@@ -115,6 +116,9 @@ public class TwoDimensionalReloadedClient implements ClientModInitializer {
         int px = SectionPos.blockToSectionCoord(client.player.getBlockX());
         int py = SectionPos.blockToSectionCoord(client.player.getBlockY());
         int secZ = SectionPos.blockToSectionCoord(Plane.FACE_FORWARD_LAYER_Z);
+
+        client.levelRenderer.invalidateCompiledGeometry(
+            client.level, client.options, client.gameRenderer.mainCamera(), client.getBlockColors());
 
         for (int sx = px - rd; sx <= px + rd; sx++) {
             for (int sy = py - rd; sy <= py + rd; sy++) {

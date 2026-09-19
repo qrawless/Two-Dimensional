@@ -11,10 +11,12 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Plane {
     private static final double CULL_DIST = -0.5;
     private static final double z = 0.5;
-    private static volatile boolean renderCulledBlocks = false;
+    private static final AtomicBoolean renderCulledBlocks = new AtomicBoolean(false);
 
     public static final int BASE_LAYER_Z = 0;
     public static final int FACE_AWAY_LAYER_Z = 1;
@@ -35,8 +37,8 @@ public class Plane {
     public static double getZ() { return z; }
     public static int getIntZ() { return (int) Math.floor(z); }
     public static double getCullDist() { return CULL_DIST; }
-    public static boolean isRenderingCulledBlocks() { return renderCulledBlocks; }
-    public static void setRenderingCulledBlocks(boolean value) { renderCulledBlocks = value; }
+    public static boolean isRenderingCulledBlocks() { return renderCulledBlocks.get(); }
+    public static void setRenderingCulledBlocks(boolean value) { renderCulledBlocks.set(value); }
 
     public static int layerZ(LayerMode mode) {
         return switch (mode) {
@@ -59,7 +61,7 @@ public class Plane {
     }
 
     public static boolean shouldCull(BlockPos blockPos) {
-        if (renderCulledBlocks) {
+        if (renderCulledBlocks.get()) {
             return blockPos.getZ() <= FACE_FORWARD_LAYER_Z - 1;
         }
         double dist = Plane.sdf(Vec3.atCenterOf(blockPos));
@@ -67,7 +69,7 @@ public class Plane {
     }
 
     public static boolean shouldCullRender(BlockPos blockPos) {
-        if (blockPos.getZ() == FACE_FORWARD_LAYER_Z && renderCulledBlocks) {
+        if (blockPos.getZ() == FACE_FORWARD_LAYER_Z && renderCulledBlocks.get()) {
             return false;
         }
         return shouldCull(blockPos);
