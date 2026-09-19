@@ -117,10 +117,10 @@ public class TwoDimensionalReloadedClient implements ClientModInitializer {
 
         SodiumWorldRenderer renderer = SodiumWorldRenderer.instanceNullable();
         if (renderer != null) {
-            renderer.scheduleRebuildForChunks(
-                px - rd, py - rd, secZ,
-                px + rd, py + rd, secZ,
-                false);
+                renderer.scheduleRebuildForChunks(
+                    px - rd, py - rd, secZ,
+                    px + rd, py + rd, secZ,
+                    true);
         }
     }
 }
