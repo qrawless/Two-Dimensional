@@ -29,7 +29,7 @@ public class AbstractBlockRenderContextMixin {
 
         if (dist <= Plane.getCullDist()) {
             cir.setReturnValue(false);
-        } else if (dist <= 0.5) {
+        } else if (dist <= Plane.BLOCK_HALF_SIZE) {
             if (facing.getStepY() == 0 && Plane.sdf(Vec3.atCenterOf(pos.relative(facing))) <= Plane.getCullDist()) {
                 cir.setReturnValue(true);
             }
