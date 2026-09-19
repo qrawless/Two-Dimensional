@@ -21,6 +21,15 @@ public class Plane {
     public static final int FACE_FORWARD_LAYER_Z = -1;
     public static final int MAX_LAYER_Z = Math.max(FACE_AWAY_LAYER_Z, Math.abs(FACE_FORWARD_LAYER_Z));
 
+    public static final double BLOCK_CENTER = 0.5;
+    public static final double BLOCK_HALF_SIZE = 0.5;
+    public static final double INTERACT_REACH = 1.8;
+    public static final double CREATIVE_REACH = 5.0;
+    public static final double SURVIVAL_REACH = 4.5;
+    public static final float OPPOSITE_YAW = 180.0F;
+    public static final int ENTITY_TRACK_RANGE_HORIZONTAL = 64;
+    public static final int ENTITY_TRACK_RANGE_VERTICAL = 32;
+
     public Plane() {}
 
     public static double getZ() { return z; }
@@ -63,14 +72,14 @@ public class Plane {
 
     public static boolean shouldInteract(BlockPos blockPos) {
         double dist = Plane.sdf(Vec3.atCenterOf(blockPos));
-        return dist <= 1.8;
+        return dist <= INTERACT_REACH;
     }
 
     public static boolean isWithinReach(Player player, BlockPos pos) {
-        double range = player.isCreative() ? 5.0 : 4.5;
+        double range = player.isCreative() ? CREATIVE_REACH : SURVIVAL_REACH;
         Vec3 eye = player.getEyePosition();
-        double dx = eye.x - (pos.getX() + 0.5);
-        double dy = eye.y - (pos.getY() + 0.5);
+        double dx = eye.x - (pos.getX() + BLOCK_CENTER);
+        double dy = eye.y - (pos.getY() + BLOCK_CENTER);
         return dx * dx + dy * dy <= range * range;
     }
 
