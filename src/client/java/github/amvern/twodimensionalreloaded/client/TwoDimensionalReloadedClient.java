@@ -69,7 +69,7 @@ public class TwoDimensionalReloadedClient implements ClientModInitializer {
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client)-> {
             Minecraft.getInstance().player.setAttached(PLANE_ENTITY_FLAG, true);
-            client.levelRenderer.resetLevelRenderData();
+            reloadPlaneSections(client);
         });
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -108,6 +108,7 @@ public class TwoDimensionalReloadedClient implements ClientModInitializer {
     private void reloadPlaneSections(Minecraft client) {
         if (client.level == null) return;
 
-        client.levelRenderer.resetLevelRenderData();
+        client.levelRenderer.invalidateCompiledGeometry(
+            client.level, client.options, client.gameRenderer.mainCamera(), client.getBlockColors());
     }
 }
