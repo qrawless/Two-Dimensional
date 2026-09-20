@@ -111,15 +111,19 @@ public class TwoDimensionalReloadedClient implements ClientModInitializer {
     private void reloadPlaneSections(Minecraft client) {
         if (client.level == null || client.player == null) return;
 
+        int rd = client.options.getEffectiveRenderDistance();
         int px = SectionPos.blockToSectionCoord(client.player.getBlockX());
         int py = SectionPos.blockToSectionCoord(client.player.getBlockY());
         int secZ = SectionPos.blockToSectionCoord(Plane.FACE_FORWARD_LAYER_Z);
 
-        ((ClientLevel) client.level).setSectionDirtyWithNeighbors(px, py, secZ);
-
         SodiumWorldRenderer renderer = SodiumWorldRenderer.instanceNullable();
         if (renderer != null) {
-            renderer.scheduleTerrainUpdate();
+            renderer.scheduleRebuildForChunks(
+                px - rd, Math.max(0, py - rd), secZ,
+                px + rd, Math.min((client.level.getHeight() >> 4) - 1, py + rd), secZ + 1,
+                true);
+        } else {
+            ((ClientLevel) client.level).setSectionDirtyWithNeighbors(px, py, secZ);
         }
     }
 }
