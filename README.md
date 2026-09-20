@@ -24,6 +24,8 @@ If you feel like the camera viewport size is too small, increase your FOV to see
 
 Build a Nether portal in the background layer and right click a portal block to travel to the Nether (vanilla cooldowns and timing apply).
 
+Press **N** while looking at a block to cycle its direction (like the debug stick). Hold **Shift** while pressing **N** to cycle backwards.
+
 Optional Block Placement Guide Feature (Use Cloth Config API + ModMenu to configure)
 <img width="831" height="388" alt="image" src="https://github.com/user-attachments/assets/0c41ee8b-9cbf-4889-81eb-ac171b921d76" />
 
