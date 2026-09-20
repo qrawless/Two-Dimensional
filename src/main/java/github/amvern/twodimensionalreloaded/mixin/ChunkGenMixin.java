@@ -34,15 +34,19 @@ public abstract class ChunkGenMixin {
             int bottomOffset = edgeOffset(chunkX, ry, 3);
 
             removeBlock(chunk, new BlockPos(minX, ry + leftOffset, Plane.FACE_FORWARD_LAYER_Z));
+            removeBlock(chunk, new BlockPos(minX, ry + leftOffset + 1, Plane.FACE_FORWARD_LAYER_Z));
             removeBlock(chunk, new BlockPos(maxX, ry + rightOffset, Plane.FACE_FORWARD_LAYER_Z));
+            removeBlock(chunk, new BlockPos(maxX, ry + rightOffset + 1, Plane.FACE_FORWARD_LAYER_Z));
             removeBlock(chunk, new BlockPos(minX + topOffset, ry, Plane.FACE_FORWARD_LAYER_Z));
+            removeBlock(chunk, new BlockPos(minX + topOffset + 1, ry, Plane.FACE_FORWARD_LAYER_Z));
             removeBlock(chunk, new BlockPos(minX + bottomOffset, ry + SPACING - 1, Plane.FACE_FORWARD_LAYER_Z));
+            removeBlock(chunk, new BlockPos(minX + bottomOffset + 1, ry + SPACING - 1, Plane.FACE_FORWARD_LAYER_Z));
         }
     }
 
     private static int edgeOffset(int chunkX, int ry, int edge) {
         int seed = chunkX * 31 + ry * 17 + edge * 13;
-        return Math.floorMod(seed, SPACING);
+        return Math.floorMod(seed, SPACING - 1);
     }
 
     private static void removeBlock(ChunkAccess chunk, BlockPos pos) {
