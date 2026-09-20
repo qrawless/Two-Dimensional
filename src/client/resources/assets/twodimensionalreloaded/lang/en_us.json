@@ -4,5 +4,6 @@
     "key.twodimensionalreloaded.face_forward": "Face Forward",
     "key.twodimensionalreloaded.enable_placement_guide": "Toggle Placement Guide",
     "key.twodimensionalreloaded.precision_place_mode": "Precision Place Mode",
-    "key.twodimensionalreloaded.screen_peek": "Screen Peek"
+    "key.twodimensionalreloaded.screen_peek": "Screen Peek",
+    "key.twodimensionalreloaded.cycle_block_direction": "Rotate Block Direction"
 }
