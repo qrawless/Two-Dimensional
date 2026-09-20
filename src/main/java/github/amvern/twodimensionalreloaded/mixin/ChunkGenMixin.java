@@ -4,6 +4,7 @@ import github.amvern.twodimensionalreloaded.utils.Plane;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,6 +23,7 @@ public abstract class ChunkGenMixin {
         int rx = random.nextInt(16);
         int ry = random.nextInt(256);
         BlockPos blockPos = new BlockPos(chunk.getPos().getMinBlockX() + rx, ry, Plane.FACE_FORWARD_LAYER_Z);
-        chunk.setBlockState(blockPos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 16);
+        if (chunk.getBlockState(blockPos).is(Blocks.BEDROCK)) return;
+        chunk.setBlockState(blockPos, Blocks.AIR.defaultBlockState(), 16);
     }
 }
