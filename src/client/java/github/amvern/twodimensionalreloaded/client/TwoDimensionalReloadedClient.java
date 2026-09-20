@@ -2,6 +2,7 @@ package github.amvern.twodimensionalreloaded.client;
 
 import github.amvern.twodimensionalreloaded.TwoDimensionalReloaded;
 import github.amvern.twodimensionalreloaded.client.config.ClientConfig;
+import github.amvern.twodimensionalreloaded.network.CycleBlockPayload;
 import github.amvern.twodimensionalreloaded.network.InteractionLayerPayload;
 import github.amvern.twodimensionalreloaded.util.BlockPlacementGuide;
 import github.amvern.twodimensionalreloaded.utils.LayerMode;
@@ -21,10 +22,13 @@ import net.caffeinemc.mods.sodium.client.render.SodiumWorldRenderer;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 
 public class TwoDimensionalReloadedClient implements ClientModInitializer {
     private LayerMode lastMode = LayerMode.BASE;
@@ -56,6 +60,12 @@ public class TwoDimensionalReloadedClient implements ClientModInitializer {
     public static KeyMapping screenPeek = KeyMappingHelper.registerKeyMapping(new KeyMapping(
             "key.twodimensionalreloaded.screen_peek",
             InputConstants.KEY_Z,
+            UTILITY_CATEGORY
+    ));
+
+    public static KeyMapping cycleBlockDirection = KeyMappingHelper.registerKeyMapping(new KeyMapping(
+            "key.twodimensionalreloaded.cycle_block_direction",
+            InputConstants.KEY_N,
             UTILITY_CATEGORY
     ));
 
@@ -91,6 +101,14 @@ public class TwoDimensionalReloadedClient implements ClientModInitializer {
 
             if(enablePlacementGuide.consumeClick()) {
                 TwoDimensionalReloadedClient.CONFIG.renderBlockPlacementGuide = !TwoDimensionalReloadedClient.CONFIG.renderBlockPlacementGuide;
+            }
+
+            if (cycleBlockDirection.consumeClick()) {
+                HitResult hit = client.player.raycastHitResult(0.0f, client.player);
+                if (hit.getType() == HitResult.Type.BLOCK) {
+                    BlockPos targetPos = ((BlockHitResult) hit).getBlockPos();
+                    ClientPlayNetworking.send(new CycleBlockPayload(targetPos));
+                }
             }
 
             if (mode != lastMode) {
