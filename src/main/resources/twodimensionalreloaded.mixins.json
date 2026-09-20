@@ -8,6 +8,7 @@
     "AbstractHorseMixin",
     "BlockStateBaseMixin",
     "ChunkGeneratorStructureStateMixin",
+    "ChunkGenMixin",
     "DragonEggBlockMixin",
     "EndCityShipMixin",
     "EnderDragonFightMixin",
