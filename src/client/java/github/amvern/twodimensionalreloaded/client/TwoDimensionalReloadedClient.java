@@ -21,7 +21,6 @@ import net.caffeinemc.mods.sodium.client.render.SodiumWorldRenderer;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.SectionPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
@@ -112,19 +111,12 @@ public class TwoDimensionalReloadedClient implements ClientModInitializer {
     private void reloadPlaneSections(Minecraft client) {
         if (client.level == null || client.player == null) return;
 
-        int rd = client.options.getEffectiveRenderDistance();
         int px = SectionPos.blockToSectionCoord(client.player.getBlockX());
         int py = SectionPos.blockToSectionCoord(client.player.getBlockY());
         int secZ = SectionPos.blockToSectionCoord(Plane.FACE_FORWARD_LAYER_Z);
 
-        client.levelRenderer.invalidateCompiledGeometry(
-            client.level, client.options, client.gameRenderer.mainCamera(), client.getBlockColors());
+        ((ClientLevel) client.level).setSectionDirtyWithNeighbors(px, py, secZ);
 
-        for (int sx = px - rd; sx <= px + rd; sx++) {
-            for (int sy = py - rd; sy <= py + rd; sy++) {
-                ((ClientLevel) client.level).setSectionDirtyWithNeighbors(sx, sy, secZ);
-            }
-        }
         SodiumWorldRenderer renderer = SodiumWorldRenderer.instanceNullable();
         if (renderer != null) {
             renderer.scheduleTerrainUpdate();
