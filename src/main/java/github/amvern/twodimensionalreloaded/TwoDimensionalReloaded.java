@@ -1,7 +1,9 @@
 package github.amvern.twodimensionalreloaded;
 
 import github.amvern.twodimensionalreloaded.access.InteractionLayerGetterSetter;
+import github.amvern.twodimensionalreloaded.network.CycleBlockPayload;
 import github.amvern.twodimensionalreloaded.network.InteractionLayerPayload;
+import github.amvern.twodimensionalreloaded.utils.BlockStateCycler;
 import github.amvern.twodimensionalreloaded.utils.Plane;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -39,6 +41,11 @@ public class TwoDimensionalReloaded implements ModInitializer {
             InteractionLayerPayload.CODEC
         );
 
+        PayloadTypeRegistry.serverboundPlay().register(
+            CycleBlockPayload.TYPE,
+            CycleBlockPayload.CODEC
+        );
+
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             setPlayerPlane(server, handler.getPlayer());
         });
@@ -47,6 +54,16 @@ public class TwoDimensionalReloaded implements ModInitializer {
             try {
                 ctx.server().execute(() -> {
                     ((InteractionLayerGetterSetter) ctx.player()).setInteractionLayer(payload.mode());
+                });
+            } catch (Exception err) {
+                LOGGER.info(err.getMessage());
+            }
+        });
+
+        ServerPlayNetworking.registerGlobalReceiver(CycleBlockPayload.TYPE, (payload, ctx) -> {
+            try {
+                ctx.server().execute(() -> {
+                    BlockStateCycler.cycle(ctx.player(), payload.pos());
                 });
             } catch (Exception err) {
                 LOGGER.info(err.getMessage());
