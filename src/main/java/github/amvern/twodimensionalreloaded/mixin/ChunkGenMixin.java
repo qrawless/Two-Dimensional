@@ -2,7 +2,7 @@ package github.amvern.twodimensionalreloaded.mixin;
 
 import github.amvern.twodimensionalreloaded.utils.Plane;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -19,9 +19,11 @@ public abstract class ChunkGenMixin {
     private void onChunkGenerated(WorldGenLevel level, ChunkAccess chunk, net.minecraft.world.level.StructureManager structureManager, CallbackInfo ci) {
         if (chunk.getPos().getMinBlockZ() > Plane.FACE_FORWARD_LAYER_Z || chunk.getPos().getMaxBlockZ() < Plane.FACE_FORWARD_LAYER_Z) return;
         if (!chunk.getAllStarts().isEmpty()) return;
-        RandomSource random = RandomSource.create();
-        int rx = random.nextInt(16);
-        int ry = random.nextInt(256);
+        int seed = chunk.getPos().x() * 31 + chunk.getPos().z() * 17;
+        int rx = seed % 16;
+        int rz = (seed >> 4) % 16;
+        int surfaceY = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, rx, rz);
+        int ry = Math.max(10, surfaceY - 2);
         BlockPos blockPos = new BlockPos(chunk.getPos().getMinBlockX() + rx, ry, Plane.FACE_FORWARD_LAYER_Z);
         if (chunk.getBlockState(blockPos).is(Blocks.BEDROCK)) return;
         chunk.setBlockState(blockPos, Blocks.AIR.defaultBlockState(), 16);
