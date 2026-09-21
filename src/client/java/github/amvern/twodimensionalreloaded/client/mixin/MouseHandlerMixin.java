@@ -5,6 +5,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
 import github.amvern.twodimensionalreloaded.client.TwoDimensionalReloadedClient;
 import github.amvern.twodimensionalreloaded.client.access.MouseNormalizedGetter;
+import org.lwjgl.sdl.SDLMouse;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -55,7 +56,12 @@ public class MouseHandlerMixin implements MouseNormalizedGetter {
     @WrapWithCondition(method = "grabMouse", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/InputConstants;grabMouse(Lcom/mojang/blaze3d/platform/Window;DD)V"))
     public boolean grabMouse(Window window, double x, double y) {
         InputConstants.releaseMouse(window, x, y);
+        SDLMouse.SDL_HideCursor();
         return false;
+    }
 
+    @Inject(method = "releaseMouse", at = @At("HEAD"))
+    public void releaseMouse(CallbackInfo ci) {
+        SDLMouse.SDL_ShowCursor();
     }
 }
