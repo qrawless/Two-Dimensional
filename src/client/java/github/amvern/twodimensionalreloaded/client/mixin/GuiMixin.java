@@ -1,7 +1,6 @@
 package github.amvern.twodimensionalreloaded.client.mixin;
 
 import com.mojang.blaze3d.platform.Window;
-import github.amvern.twodimensionalreloaded.client.access.MouseNormalizedGetter;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.Hud;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -9,7 +8,6 @@ import net.minecraft.client.gui.components.debug.DebugScreenEntries;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.component.AttackRange;
 import net.minecraft.world.level.GameType;
@@ -39,11 +37,8 @@ public abstract class GuiMixin {
         Window window = minecraft.getWindow();
         Options options = this.minecraft.options;
 
-        MouseNormalizedGetter virtualMouse = (MouseNormalizedGetter) mouse;
-        double mouseX = virtualMouse.twoDimensional$getVirtualX() * guiGraphics.guiWidth() / window.getScreenWidth();
-        double mouseY = virtualMouse.twoDimensional$getVirtualY() * guiGraphics.guiHeight() / window.getScreenHeight();
-        mouseX = Mth.clamp(mouseX, 0.0, guiGraphics.guiWidth() - 1.0);
-        mouseY = Mth.clamp(mouseY, 0.0, guiGraphics.guiHeight() - 1.0);
+        double mouseX = mouse.xpos() * guiGraphics.guiWidth() / window.getScreenWidth();
+        double mouseY = mouse.ypos() * guiGraphics.guiHeight() / window.getScreenHeight();
 
         if (!options.getCameraType().isFirstPerson()) {
             if (this.minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || this.canRenderCrosshairForSpectator(this.minecraft.hitResult)) {
