@@ -54,6 +54,9 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+    compileOnly "org.lwjgl:lwjgl:3.4.3"
+    compileOnly "org.lwjgl:lwjgl-sdl:3.4.3"
+
     localRuntime "maven.modrinth:iris:${iris_version}"
     implementation "net.caffeinemc:sodium-fabric:${sodium_version}"
 
