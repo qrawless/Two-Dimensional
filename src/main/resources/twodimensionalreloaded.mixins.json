@@ -6,6 +6,7 @@
   "mixins": [
     "AbstractBoatMixin",
     "AbstractHorseMixin",
+    "BonusChestFeatureMixin",
     "BlockStateBaseMixin",
     "ChunkGeneratorStructureStateMixin",
     "ChunkGenMixin",
@@ -22,6 +23,7 @@
     "MonsterRoomFeatureMixin",
     "MultifaceBlockMixin",
     "MultiTargetTickMixin",
+    "MineshaftStructureMixin",
     "NetherFortressStartPieceMixin",
     "NetherPortalBlockMixin",
     "NonFullBlockGetShapeMixin",
@@ -49,6 +51,7 @@
     "StrongholdPiecesStartPieceMixin",
     "StrongholdPortalRoomMixin",
     "StructurePieceInvoker",
+    "StructurePiecesBuilderAccessor",
     "StructurePlacementMixin",
     "TeleportRandomlyConsumeEffectMixin",
     "WallSignBlockMixin",
