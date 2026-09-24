@@ -2,6 +2,7 @@ package github.amvern.twodimensionalreloaded.mixin;
 
 import static github.amvern.twodimensionalreloaded.utils.Plane.PLANE_ENTITY_FLAG;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import github.amvern.twodimensionalreloaded.TwoDimensionalReloaded;
 import github.amvern.twodimensionalreloaded.access.InteractionLayerGetterSetter;
 import github.amvern.twodimensionalreloaded.utils.LayerMode;
@@ -46,5 +47,15 @@ public abstract class PlayerMixin extends LivingEntity {
                 }
             });
         }
+    }
+
+    @ModifyReturnValue(method = "blockInteractionRange", at = @At("RETURN"))
+    private double matchCreativeBlockInteractionRange(double original) {
+        return Plane.CREATIVE_REACH;
+    }
+
+    @ModifyReturnValue(method = "entityInteractionRange", at = @At("RETURN"))
+    private double matchCreativeEntityInteractionRange(double original) {
+        return Player.DEFAULT_ENTITY_INTERACTION_RANGE + Player.CREATIVE_ENTITY_INTERACTION_RANGE_MODIFIER_VALUE;
     }
 }
