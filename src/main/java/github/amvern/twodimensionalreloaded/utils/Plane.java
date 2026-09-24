@@ -27,7 +27,7 @@ public class Plane {
     public static final double BLOCK_HALF_SIZE = 0.5;
     public static final double INTERACT_REACH = 1.8;
     public static final double CREATIVE_REACH = 5.0;
-    public static final double SURVIVAL_REACH = 4.5;
+    public static final double SURVIVAL_REACH = CREATIVE_REACH;
     public static final float OPPOSITE_YAW = 180.0F;
     public static final int ENTITY_TRACK_RANGE_HORIZONTAL = 64;
     public static final int ENTITY_TRACK_RANGE_VERTICAL = 32;
