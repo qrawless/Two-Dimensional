@@ -9,6 +9,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.CollisionGetter;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -46,6 +48,11 @@ public class Plane {
             case FACE_AWAY -> FACE_AWAY_LAYER_Z;
             case FACE_FORWARD -> FACE_FORWARD_LAYER_Z;
         };
+    }
+
+    public static boolean hasRoomOnBaseLayer(CollisionGetter level, AABB box) {
+        AABB baseLayerSlab = new AABB(box.minX, box.minY, BASE_LAYER_Z, box.maxX, box.maxY, BASE_LAYER_Z + 1.0);
+        return level.noCollision(baseLayerSlab);
     }
 
     public static boolean isLayerAllowed(BlockPos pos, LayerMode mode) {
