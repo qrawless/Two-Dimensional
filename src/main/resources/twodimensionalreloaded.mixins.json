@@ -46,6 +46,7 @@
     "ServerGamePacketListenerImplMixin",
     "ServerPlayerGameModeMixin",
     "ServerPlayerMixin",
+    "SpawnUtilMixin",
     "StrongholdPiecesMixin",
     "StrongholdPiecesPortalRoomMixin",
     "StrongholdPiecesStartPieceMixin",
